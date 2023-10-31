@@ -15,13 +15,13 @@ from user import queries, emails
 @login_required(login_url='/users/login/')
 # @user_passes_test(queries.is_management)
 def appointment_list_view(request):
-    appointments = PlantationAppointmentsModel.objects.all().filter(user = request.user)
+    appointments = PlantationAppointmentsModel.objects.all()
 
-    if queries.is_management(request.user):
-        appointments = PlantationAppointmentsModel.objects.filter(confirmed = True)
+    if queries.is_general(request.user):
+        appointments = PlantationAppointmentsModel.objects.all().filter(user = request.user)
 
     if queries.is_staff(request.user):
-        appointments = PlantationAppointmentsModel.objects.filter(confirmed = True).filter(fumigator = request.user)
+        appointments = PlantationAppointmentsModel.objects.filter(fumigator = request.user)
         
         
     return render(request, "appointments.html", { "appointments": appointments })
@@ -30,6 +30,12 @@ def appointment_list_view(request):
 def appointment_confirm_view(request, pk):
     try:
         appointment = get_object_or_404(PlantationAppointmentsModel, pk=pk)
+
+        if request.method == "POST":
+            appointment.confirmed = True
+            appointment.save()
+            return redirect("detail-appointment", appointment.pk)
+        
     except Http404:
         return render(request, "problem.html")
 

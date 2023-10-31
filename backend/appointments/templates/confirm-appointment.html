@@ -24,7 +24,11 @@
 <p>Price per sqm: {{ appointment.price_per_sqm }}</p>
 <p>Total amount is: R{{ appointment.get_total_price }}</p>
 
-<a href="#" class="btn btn-outline-secondary" style="margin-top: 2rem;">Confirm appointment</a>
+<form action="." method="post">
+    {% csrf_token %}
+
+    <button type="submit" class="btn btn-outline-secondary" style="margin-top: 2rem;">Confirm appointment</button>
+</form>
 <br>
 
 

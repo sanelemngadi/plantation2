@@ -9,12 +9,15 @@ from delivery.models import PlantationDelivery
 from products.models import PlantationProduct
 from suppliers.models import PlantationSupplier
 
+from appointments.models import PlantationAppointmentsModel
+
 from user import queries
 
 
 def index(request):
     products = PlantationProduct.objects.all()
     suppliers = PlantationSupplier.objects.count()
+    appointments = PlantationAppointmentsModel.objects.count()
 
     total_stocks = 0
     for product in products:
@@ -22,7 +25,8 @@ def index(request):
 
     context = { 
         "products": products, "suppliers": suppliers,
-         "total_stocks": total_stocks
+         "total_stocks": total_stocks,
+         "appointments": appointments,
     }
 
 

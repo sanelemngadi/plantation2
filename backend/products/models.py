@@ -15,7 +15,7 @@ class PlantationProduct(models.Model):
     # stock = models.IntegerField(default=1)
     # discount_percentage = models.IntegerField(default=0)
     discount_percentage = models.IntegerField(default=0)
-    image = models.ImageField(upload_to="products/")
+    image = models.ImageField(upload_to="products/", blank=True, null=True)
     supplier = models.ForeignKey(PlantationSupplier, on_delete=models.CASCADE, related_name="products")
     quantity = models.IntegerField(default=0, blank=True, null=True)
 
