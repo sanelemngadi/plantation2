@@ -70,24 +70,21 @@ def appointment_detail_view(request: HttpRequest, pk):
             if form.is_valid():
                 appointment: PlantationAppointmentsModel = form.save(False)
 
-                if not appointment.fumigator:
-                    form.add_error("fumigator", "Please assign this booking to a valid user")
-                    # print("this appointment is not valid")
-                else:
-                    message = f"Hi {appointment.fumigator.get_name()}\nYou have been appointment by the administor to make a follow up with our\nrecent booking that has been forwarded to you with the following details: \nAppointment type: {appointment.appointment_service_type}\nFumigation Area: {appointment.fumigation_area}\nClient: {appointment.user.get_name()}\nLocation: {appointment.location}\n\nMessage from: {request.user.get_name()}"
-                    status = PlantationNotificationStatus.objects.create(notification_from = request.user, message = message)
-
-                    notification = PlantationNotification.objects.create(user = appointment.fumigator, notification = status)
-                    # notification.recipients.add(status)
-                    appointment.assigned = True 
-                    # name = appointment.fumigator.get_name()
-                    emails.email_user(appointment.fumigator, "Fumigation Appointment".capitalize(), message)              
-
-                    
-
-                    appointment.save()
-                    # print("this is a valid appoint")
-                    return redirect("detail-appointment", appointment.pk )
+                # if not appointment.fumigator:
+                #     form.add_error("fumigator", "Please assign this booking to a valid user")
+                #     # print("this appointment is not valid")
+                # else:
+                message = f"Hi {appointment.fumigator.get_name()}\nYou have been appointment by the administor to make a follow up with our\nrecent booking that has been forwarded to you with the following details: \nAppointment type: {appointment.appointment_service_type}\nFumigation Area: {appointment.fumigation_area}\nClient: {appointment.user.get_name()}\nLocation: {appointment.location}\n\nMessage from: {request.user.get_name()}"
+                status = PlantationNotificationStatus.objects.create(notification_from = request.user, message = message)
+                notification = PlantationNotification.objects.create(user = appointment.fumigator, notification = status)
+                # notification.recipients.add(status)
+                appointment.assigned = True 
+                # name = appointment.fumigator.get_name()
+                emails.email_user(appointment.fumigator, "Fumigation Appointment".capitalize(), message)              
+                
+                appointment.save()
+                # print("this is a valid appoint")
+                return redirect("detail-appointment", appointment.pk )
 
 
     except Http404:

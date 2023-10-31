@@ -1,5 +1,6 @@
 from django import forms
 from appointments.models import PlantationAppointmentsModel
+from user.models import PlantationUser
 
 class PlantationAppointmentForm(forms.ModelForm):
     class Meta:
@@ -17,3 +18,8 @@ class PlantationAssignUserForm(forms.ModelForm):
     class Meta:
         model = PlantationAppointmentsModel
         fields = ("fumigator",)
+
+        def __init__(self, *args, **kwargs):
+            super(PlantationAssignUserForm, self).__init__(*args, **kwargs)
+
+            self.fields["fumigator"].queryset = PlantationUser.objects.filter(is_staff = True)
