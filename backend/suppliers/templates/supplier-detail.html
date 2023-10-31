@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div>
+    
+    {% if products %}
+        <h3>There are no product to pack in the warehouse</h3>
+
+        {% else %}
+        <h2 class="plantation-service_heading">{{ supplier.name }} - Supplier</h2>
+        <br>
+        <a href="{% url 'product-create' %}" class="btn btn-tertiary">Add Product</a>
+        <a href="{% url 'suppliers' %}" class="btn btn-link-tertiary">Take me back</a>
+            <br><br>
+
+            <div class="plantation-table" style="width: 100%;">
+                <table>
+                    <tr>
+                        <th>Product</th> 
+                        <th>Quantity</th>
+                        <th>Date</th>
+                        <th>Row</th>
+                        <th>Shelf</th>
+                    </tr>
+                    
+                    {% for product in supplier.products.all %}
+                        <tr>
+                            <td>{{ product.name }}</td>
+                            <td>{{ item.items_ordered }} </td>
+                            <td>{{ item.date }} </td>
+                            <td>{{ item.row }} </td>
+                            <td>{{ item.shelf }} </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+    {% endif %}
+    
+    
+</div>
+
+{% endblock content %}
