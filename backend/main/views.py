@@ -24,9 +24,10 @@ def index(request):
         total_stocks += product.quantity
 
     context = { 
-        "products": products, "suppliers": suppliers,
-         "total_stocks": total_stocks,
-         "appointments": appointments,
+        "products": products, 
+        "suppliers": suppliers,
+        "total_stocks": total_stocks,
+        "appointments": appointments,
     }
 
 
@@ -34,20 +35,12 @@ def index(request):
         settled_deliveries = PlantationDelivery.objects.filter(settled = True).filter(driver = request.user).count()
         not_settled_deliveries = PlantationDelivery.objects.filter(settled = False).filter(driver = request.user).count()
 
-        if queries.is_admin(request.user) or queries.is_superuser(request.user):
+        if queries.is_management(request.user) or queries.is_superuser(request.user):
             settled_deliveries = PlantationDelivery.objects.filter(settled = True).count()
             not_settled_deliveries = PlantationDelivery.objects.filter(settled = False).count()
         
         context["settled_deliveries"] = settled_deliveries
         context["not_settled_deliveries"] = not_settled_deliveries
-
-    # if request.user.is_authenticated and  
-
-    # context = { 
-    #     "products": products, "suppliers": suppliers,
-    #     "settled_deliveries": settled_deliveries, 
-    #     "not_settled_deliveries": not_settled_deliveries,
-    # }
     
     return render(request, "main.html", context)
 

@@ -19,7 +19,6 @@ class PlantationAssignUserForm(forms.ModelForm):
         model = PlantationAppointmentsModel
         fields = ("fumigator",)
 
-        def __init__(self, *args, **kwargs):
-            super(PlantationAssignUserForm, self).__init__(*args, **kwargs)
-
-            self.fields["fumigator"].queryset = PlantationUser.objects.filter(is_staff = True)
+    def __init__(self, *args, **kwargs):
+        super(PlantationAssignUserForm, self).__init__(*args, **kwargs)
+        self.fields["fumigator"].queryset = PlantationUser.objects.filter(is_staff = True)
